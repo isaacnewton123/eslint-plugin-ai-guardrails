@@ -14,7 +14,7 @@ and this project follows [Semantic Versioning](https://semver.org/).
   - `max-function-lines` — prevent god functions (default: 50 lines)
   - `no-orphan-todos` — require tracking references on TODO/FIXME/HACK
   - `no-ai-obvious-comments` — detect redundant comments that repeat code
-- **CLI initializer** (`npx ai-guardrails init`) with auto-detection for:
+- **CLI initializer** (`npx eslint-plugin-ai-guardrails init`) with auto-detection for:
   - Package managers (npm, pnpm, yarn, bun)
   - Frameworks (Vite, Next.js, NestJS, Elysia)
   - Automatic `vite-plugin-checker` wiring

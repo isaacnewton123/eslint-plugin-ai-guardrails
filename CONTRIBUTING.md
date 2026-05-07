@@ -33,7 +33,7 @@ npm test          # All tests must pass
 ```
 src/
   index.ts              Plugin entry point (rules, configs, flatConfigs)
-  cli.ts                CLI initializer (npx ai-guardrails init)
+  cli.ts                CLI initializer (npx eslint-plugin-ai-guardrails init)
   configs/
     recommended.ts      ESLint v8 legacy recommended config
   rules/

@@ -1,4 +1,11 @@
+
 # eslint-plugin-ai-guardrails
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/isaacnewton123/ai-guardrails/refs/heads/main/public/og-image.webp" alt="AI Guardrails Logo" width="200" />
+</p>
+
+#
 
 [![npm version](https://img.shields.io/npm/v/eslint-plugin-ai-guardrails)](https://www.npmjs.com/package/eslint-plugin-ai-guardrails)
 [![CI](https://img.shields.io/github/actions/workflow/status/isaacnewton123/eslint-plugin-ai-guardrails/ci.yml?branch=main&label=CI&logo=github)](https://github.com/isaacnewton123/eslint-plugin-ai-guardrails/actions/workflows/ci.yml)
@@ -6,8 +13,11 @@
 [![typescript](https://img.shields.io/badge/built%20with-TypeScript-3178C6)](https://www.typescriptlang.org/)
 [![eslint](https://img.shields.io/badge/ESLint-v8%20%26%20v9-4B32C3)](https://eslint.org/)
 [![node](https://img.shields.io/badge/node-%3E%3D18-339933)](https://nodejs.org/)
+[![website](https://img.shields.io/badge/website-eslint--ai--guardrails.vercel.app-blue)](https://eslint-ai-guardrails.vercel.app/)
 
 **ESLint guardrails for AI-assisted codebases.**
+
+🌐 **Website & Docs:** [https://eslint-ai-guardrails.vercel.app](https://eslint-ai-guardrails.vercel.app/)
 
 Stop AI-generated code from becoming long-term tech debt. `eslint-plugin-ai-guardrails` enforces structure-first linting rules that catch the patterns AI coding tools get wrong most often.
 
@@ -76,7 +86,7 @@ bun add -d eslint-plugin-ai-guardrails @typescript-eslint/parser
 ### One-command setup (recommended)
 
 ```bash
-npx ai-guardrails init
+npx eslint-plugin-ai-guardrails init
 ```
 
 This will:
@@ -199,6 +209,7 @@ See:
 
 **Hanif Maulana (Isaac Newton)**
 
+- Website: [eslint-ai-guardrails.vercel.app](https://eslint-ai-guardrails.vercel.app/)
 - GitHub: [github.com/isaacnewton123](https://github.com/isaacnewton123)
 - X: [x.com/isaac_newton252](https://x.com/isaac_newton252)
 - Facebook: [facebook.com/hanif.maulana.108](https://www.facebook.com/hanif.maulana.108/)

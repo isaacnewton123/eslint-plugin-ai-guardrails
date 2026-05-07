@@ -1,6 +1,6 @@
 # Integrations
 
-> **Quick start**: For most projects, run `npx ai-guardrails init` to auto-generate strict scripts, `tsconfig.json`, and `eslint.config.js`.
+> **Quick start**: For most projects, run `npx eslint-plugin-ai-guardrails init` to auto-generate strict scripts, `tsconfig.json`, and `eslint.config.js`.
 
 ---
 
@@ -242,7 +242,7 @@ For monorepos, install `eslint-plugin-ai-guardrails` in each workspace package t
 Run inside each package:
 
 ```bash
-npx ai-guardrails init
+npx eslint-plugin-ai-guardrails init
 ```
 
 ### Example structure

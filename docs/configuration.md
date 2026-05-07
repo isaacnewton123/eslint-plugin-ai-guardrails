@@ -19,7 +19,7 @@ JavaScript files are intentionally excluded — this plugin targets TypeScript-f
 The fastest way to configure everything:
 
 ```bash
-npx ai-guardrails init
+npx eslint-plugin-ai-guardrails init
 ```
 
 This creates or updates:

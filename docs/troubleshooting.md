@@ -42,7 +42,7 @@ npm install --save-dev @typescript-eslint/parser
 
 ---
 
-## `npx ai-guardrails init` changed my `tsconfig.json`
+## `npx eslint-plugin-ai-guardrails init` changed my `tsconfig.json`
 
 The initializer only **adds** safe strict baseline options when they're missing:
 

@@ -18,7 +18,7 @@ const configs = {
 
 /**
  * Lazily resolve @typescript-eslint/parser to avoid hard crashes when the
- * peer dependency is not yet installed (e.g. during `npx ai-guardrails init`).
+ * peer dependency is not yet installed (e.g. during `npx eslint-plugin-ai-guardrails init`).
  */
 const loadParser = (): unknown => {
   try {
