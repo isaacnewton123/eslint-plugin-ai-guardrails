@@ -3,4 +3,3 @@ dist/
 coverage/
 *.log
 *.tgz
-.stress-tests/

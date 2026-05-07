@@ -23,9 +23,9 @@ npx eslint-plugin-ai-guardrails init
 ```
 
 This creates or updates:
-- `eslint.config.js` — flat config with recommended rules
+- `eslint.config.mjs` — flat config with recommended rules (only when no ESLint config exists)
 - `tsconfig.json` — strict baseline (only if missing)
-- `package.json` scripts — `lint`, `typecheck`, `build`
+- `package.json` scripts — `lint`, `typecheck`, `build` (only if missing)
 - Dev dependencies — installs what's missing
 
 ---
@@ -35,7 +35,7 @@ This creates or updates:
 ### Minimal
 
 ```js
-// eslint.config.js
+// eslint.config.mjs
 import aiGuardrails from 'eslint-plugin-ai-guardrails';
 
 export default [
@@ -46,7 +46,7 @@ export default [
 ### With `@eslint/js` + `typescript-eslint`
 
 ```js
-// eslint.config.js
+// eslint.config.mjs
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import aiGuardrails from 'eslint-plugin-ai-guardrails';
@@ -62,7 +62,7 @@ export default [
 ### CJS (CommonJS)
 
 ```js
-// eslint.config.js
+// eslint.config.cjs
 const aiGuardrails = require('eslint-plugin-ai-guardrails');
 
 module.exports = [

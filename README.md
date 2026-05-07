@@ -58,7 +58,7 @@ This plugin is integration-tested against these framework configurations:
 - ✅ **NestJS** (ESLint v9 flat config with strict overrides)
 - ✅ **Express + TypeScript** (ESLint v8 legacy `.eslintrc`)
 - ✅ **ESM projects** (`"type": "module"` with `eslint.config.mjs`)
-- ✅ **CJS projects** (`require()` with `eslint.config.js`)
+- ✅ **CJS projects** (`require()` with `eslint.config.cjs`)
 - ✅ **Monorepo workspaces** (npm / pnpm / yarn workspaces)
 
 ---
@@ -91,8 +91,8 @@ npx eslint-plugin-ai-guardrails init
 
 This will:
 
-1. Create `eslint.config.js` if you don't already have an ESLint config
-2. Add strict scripts to `package.json` (`lint`, `typecheck`, `build`)
+1. Create `eslint.config.mjs` if you don't already have an ESLint config
+2. Add `lint`, `typecheck`, and `build` scripts only when missing (existing scripts are preserved)
 3. Ensure required dev dependencies are installed
 4. Create `tsconfig.json` with a strict baseline (if missing)
 5. Wire `vite-plugin-checker` if Vite is detected
@@ -100,7 +100,7 @@ This will:
 ### ESLint v9 — Flat Config (recommended)
 
 ```js
-// eslint.config.js
+// eslint.config.mjs
 import aiGuardrails from 'eslint-plugin-ai-guardrails';
 
 export default [

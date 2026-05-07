@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-ai-guardrails",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "ESLint rules to prevent AI-generated chaos: god files, god functions, orphan TODOs, and obvious comments.",
   "keywords": [
     "eslint",
@@ -51,7 +51,8 @@
     "eslint": "^8.57.1",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite": "^8.0.11"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -60,7 +60,7 @@ type PluginWithMeta = TSESLint.Linter.Plugin & {
 const plugin = {
   meta: {
     name: 'eslint-plugin-ai-guardrails',
-    version: '1.0.0'
+    version: '1.1.0'
   },
   rules,
   configs

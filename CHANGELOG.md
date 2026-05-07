@@ -5,6 +5,17 @@ All notable changes to this project are documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/).
 
+## [release]
+
+## [1.1.0] - 2026-05-07
+
+### Changed
+
+- CLI initializer now creates `eslint.config.mjs` for new projects and preserves existing `lint`/`build` scripts.
+- CLI initializer now skips `tsconfig.json` updates when the file exists but contains invalid JSON, preventing destructive overwrites.
+- Documentation updated to reflect non-destructive `init` behavior and `.mjs` flat-config defaults.
+- Added `.stress-tests/` multi-framework failure harness for validating that guardrail violations break builds as expected.
+
 ## [1.0.0] - 2026-05-07
 
 ### Added

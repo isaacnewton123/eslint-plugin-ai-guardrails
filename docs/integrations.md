@@ -1,6 +1,6 @@
 # Integrations
 
-> **Quick start**: For most projects, run `npx eslint-plugin-ai-guardrails init` to auto-generate strict scripts, `tsconfig.json`, and `eslint.config.js`.
+> **Quick start**: For most projects, run `npx eslint-plugin-ai-guardrails init` to auto-generate missing scripts, `tsconfig.json`, and `eslint.config.mjs`.
 
 ---
 
@@ -8,7 +8,7 @@
 
 Use `vite-plugin-checker` to surface ESLint violations in both the terminal and browser overlay during development.
 
-**ESLint config** (`eslint.config.js`):
+**ESLint config** (`eslint.config.mjs`):
 
 ```js
 import js from '@eslint/js';
@@ -162,7 +162,7 @@ Express projects using ESLint v8 can use the legacy `.eslintrc` config.
 }
 ```
 
-> **Migrating to ESLint v9?** Replace `.eslintrc.json` with an `eslint.config.js` that uses `aiGuardrails.flatConfigs.recommended` (see Vite or NestJS examples above).
+> **Migrating to ESLint v9?** Replace `.eslintrc.json` with an `eslint.config.mjs` that uses `aiGuardrails.flatConfigs.recommended` (see Vite or NestJS examples above).
 
 ---
 
@@ -170,7 +170,7 @@ Express projects using ESLint v8 can use the legacy `.eslintrc` config.
 
 Bun-based backends (Elysia, Hono) work with ESLint v9 flat config.
 
-**ESLint config** (`eslint.config.js`):
+**ESLint config** (`eslint.config.mjs`):
 
 ```js
 import aiGuardrails from 'eslint-plugin-ai-guardrails';
@@ -202,7 +202,7 @@ export default [
 
 SvelteKit projects using ESLint v9 flat config:
 
-**ESLint config** (`eslint.config.js`):
+**ESLint config** (`eslint.config.mjs`):
 
 ```js
 import js from '@eslint/js';
@@ -253,14 +253,14 @@ repo/
   turbo.json            (optional)
   apps/
     web/                (Vite/Next)
-      eslint.config.js
+      eslint.config.mjs
       package.json
     api/                (Nest/Express)
-      eslint.config.js
+      eslint.config.mjs
       package.json
   packages/
     shared/             (shared library)
-      eslint.config.js
+      eslint.config.mjs
       package.json
 ```
 

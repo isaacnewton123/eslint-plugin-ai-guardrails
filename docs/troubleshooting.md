@@ -36,7 +36,7 @@ npm install --save-dev @typescript-eslint/parser
 
 **Check 1**: Verify the files match the glob pattern. The recommended config only applies to `**/*.{ts,tsx,mts,cts}`. JavaScript files are excluded by design.
 
-**Check 2**: For ESLint v9 flat config, make sure `eslint.config.js` (not `.eslintrc`) is being used. ESLint v9 ignores `.eslintrc` files.
+**Check 2**: For ESLint v9 flat config, make sure `eslint.config.mjs`/`eslint.config.js` (not `.eslintrc`) is being used. ESLint v9 ignores `.eslintrc` files.
 
 **Check 3**: For ESLint v8, make sure you have `"parser": "@typescript-eslint/parser"` in your config.
 
@@ -52,6 +52,9 @@ The initializer only **adds** safe strict baseline options when they're missing:
 - `forceConsistentCasingInFileNames: true`
 
 It never removes or overwrites existing settings. If you're using a framework-specific config (e.g., Next.js), the initializer will merge rather than replace.
+
+It also does **not** overwrite existing `lint`/`build` scripts — it only creates missing scripts.  
+If `tsconfig.json` exists but is invalid JSON, initializer now skips tsconfig changes to avoid destructive overwrite.
 
 ---
 

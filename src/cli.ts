@@ -35,6 +35,15 @@ const readJson = <T>(filePath: string): T | null => {
   }
 };
 
+const fileExists = (filePath: string): boolean => {
+  try {
+    fs.accessSync(filePath, fs.constants.F_OK);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 const writeJson = (filePath: string, value: unknown): void => {
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
 };
@@ -86,16 +95,12 @@ const ensureDevDeps = (
   cwd: string,
   pkg: PackageJson,
   packageManager: string,
-  extraDevDeps: string[] = [],
-  installOptionalEslintDeps: boolean = false
+  extraDevDeps: string[] = []
 ): void => {
-  const required = ['eslint-plugin-ai-guardrails', '@typescript-eslint/parser', 'typescript', 'typescript-eslint'];
-
-  // For flat config examples / modern setups
-  const optional = installOptionalEslintDeps ? ['eslint', '@eslint/js'] : [];
+  const required = ['eslint', 'eslint-plugin-ai-guardrails', '@typescript-eslint/parser', 'typescript', 'typescript-eslint'];
 
   const installed = getInstalledDeps(pkg);
-  const requested = [...required, ...optional, ...extraDevDeps];
+  const requested = [...required, ...extraDevDeps];
   const missing = requested.filter((name) => !installed.has(name));
   if (missing.length === 0) {
     info('All required dependencies already present; skipping install.');
@@ -113,13 +118,11 @@ const ensureDevDeps = (
   run(cwd, packageManager, args);
 };
 
-const eslintConfigTemplate = `import js from '@eslint/js'
-import tseslint from 'typescript-eslint'
+const eslintConfigTemplate = `import tseslint from 'typescript-eslint'
 import aiGuardrails from 'eslint-plugin-ai-guardrails'
 
 export default [
   { ignores: ['dist', 'build', 'coverage', 'node_modules'] },
-  js.configs.recommended,
   ...tseslint.configs.recommended,
   aiGuardrails.flatConfigs.recommended
 ]
@@ -210,6 +213,7 @@ const ensureViteChecker = (cwd: string): void => {
 
 const ensureTsConfig = (cwd: string, detected: DetectedProject): void => {
   const tsconfigPath = path.join(cwd, 'tsconfig.json');
+  const tsconfigExists = fileExists(tsconfigPath);
   const existing = readJson<TsConfig>(tsconfigPath);
 
   const baselineCompilerOptions: Record<string, unknown> = {
@@ -237,13 +241,19 @@ const ensureTsConfig = (cwd: string, detected: DetectedProject): void => {
     include: ['src/**/*.ts', 'src/**/*.tsx']
   };
 
-  if (!existing) {
+  if (!existing && !tsconfigExists) {
     writeJson(tsconfigPath, baseline);
     info('Created tsconfig.json (strict TypeScript baseline).');
     return;
   }
 
-  const compilerOptions = { ...(existing.compilerOptions ?? {}) };
+  if (!existing && tsconfigExists) {
+    warn('Existing tsconfig.json is not valid JSON; skipping tsconfig changes to avoid destructive overwrite.');
+    return;
+  }
+
+  const safeExisting = existing as TsConfig;
+  const compilerOptions = { ...(safeExisting.compilerOptions ?? {}) };
   for (const [key, value] of Object.entries(baseline.compilerOptions ?? {})) {
     if (!(key in compilerOptions)) {
       compilerOptions[key] = value;
@@ -254,10 +264,10 @@ const ensureTsConfig = (cwd: string, detected: DetectedProject): void => {
     compilerOptions.types = Array.from(new Set([...(compilerOptions.types as unknown[]), ...(baseline.compilerOptions?.types as unknown[])]));
   }
 
-  const include = Array.from(new Set([...(existing.include ?? []), ...(baseline.include ?? [])]));
+  const include = Array.from(new Set([...(safeExisting.include ?? []), ...(baseline.include ?? [])]));
 
   const merged: TsConfig = {
-    ...existing,
+    ...safeExisting,
     compilerOptions,
     include
   };
@@ -279,12 +289,10 @@ const init = (cwd: string): void => {
   const detected = detectProject(cwd, packageJson);
   ensureTsConfig(cwd, detected);
 
-  let createdFlatConfig = false;
   if (!hasFlatConfig && !hasLegacyConfig) {
     // Prefer flat config for new projects.
-    fs.writeFileSync(path.join(cwd, 'eslint.config.js'), eslintConfigTemplate, 'utf8');
-    info('Created eslint.config.js');
-    createdFlatConfig = true;
+    fs.writeFileSync(path.join(cwd, 'eslint.config.mjs'), eslintConfigTemplate, 'utf8');
+    info('Created eslint.config.mjs');
   } else {
     info('ESLint config already exists; not overwriting.');
   }
@@ -293,13 +301,7 @@ const init = (cwd: string): void => {
   if (!scripts.lint) {
     scripts.lint = 'eslint . --ext .ts,.tsx,.mts,.cts --max-warnings 0';
   } else {
-    if (!scripts.lint.includes('--ext')) {
-      // Keep it TS-only by default.
-      scripts.lint = scripts.lint.replace(/\beslint\b/u, 'eslint --ext .ts,.tsx,.mts,.cts');
-    }
-    if (!scripts.lint.includes('--max-warnings')) {
-      scripts.lint = `${scripts.lint} --max-warnings 0`;
-    }
+    info('lint script already exists; not overwriting.');
   }
 
   if (!scripts.typecheck) {
@@ -314,8 +316,8 @@ const init = (cwd: string): void => {
     } else {
       scripts.build = 'npm run lint && npm run typecheck';
     }
-  } else if (!scripts.build.includes('npm run lint')) {
-    scripts.build = `npm run lint && ${scripts.build}`;
+  } else {
+    info('build script already exists; not overwriting.');
   }
 
   packageJson.scripts = scripts;
@@ -327,7 +329,7 @@ const init = (cwd: string): void => {
   if (detected.isVite) {
     extraDevDeps.push('vite-plugin-checker');
   }
-  ensureDevDeps(cwd, packageJson, pm, extraDevDeps, createdFlatConfig);
+  ensureDevDeps(cwd, packageJson, pm, extraDevDeps);
 
   if (detected.isVite) {
     ensureViteChecker(cwd);
