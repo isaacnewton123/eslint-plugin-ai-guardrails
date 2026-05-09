@@ -14,6 +14,7 @@
 [![eslint](https://img.shields.io/badge/ESLint-v8%20%26%20v9-4B32C3)](https://eslint.org/)
 [![node](https://img.shields.io/badge/node-%3E%3D18-339933)](https://nodejs.org/)
 [![website](https://img.shields.io/badge/website-eslint--ai--guardrails.vercel.app-blue)](https://eslint-ai-guardrails.vercel.app/)
+[![Sponsor](https://img.shields.io/badge/sponsor-isaacnewton123-ea4aaa?logo=githubsponsors)](https://github.com/sponsors/isaacnewton123)
 
 **ESLint guardrails for AI-assisted codebases.**
 
@@ -222,6 +223,7 @@ If this plugin saves you from AI-generated chaos, consider supporting developmen
 
 - Ko-fi: [ko-fi.com/isaacnewton1](https://ko-fi.com/isaacnewton1)
 - Trakteer: [trakteer.id/isaacnewton1/link](https://trakteer.id/isaacnewton1/link)
+- Github: [github.com/sponsors/isaacnewton123](https://github.com/sponsors/isaacnewton123)
 
 ---
 
