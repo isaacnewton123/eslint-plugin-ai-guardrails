@@ -42,19 +42,12 @@ npm install --save-dev @typescript-eslint/parser
 
 ---
 
-## `npx eslint-plugin-ai-guardrails init` changed my `tsconfig.json`
+## `npx eslint-plugin-ai-guardrails init` completely replaced my configs
 
-The initializer only **adds** safe strict baseline options when they're missing:
+Yes! As of the latest update, the smart CLI completely overwrites specific configuration files (like `tsconfig.json`, `eslint.config.js`/`eslint.config.mjs`, and `package.json` scripts) for frameworks like **Vite** and **Next.js** to strictly match the AI-Guardrails standards.
 
-- `strict: true`
-- `skipLibCheck: true`
-- `esModuleInterop: true`
-- `forceConsistentCasingInFileNames: true`
-
-It never removes or overwrites existing settings. If you're using a framework-specific config (e.g., Next.js), the initializer will merge rather than replace.
-
-It also does **not** overwrite existing `lint`/`build` scripts — it only creates missing scripts.  
-If `tsconfig.json` exists but is invalid JSON, initializer now skips tsconfig changes to avoid destructive overwrite.
+If you are using a generic setup (e.g. NestJS), it will non-destructively inject the settings.
+You will always be prompted with `Proceed? (y/n)` before any destructive overwrites happen.
 
 ---
 

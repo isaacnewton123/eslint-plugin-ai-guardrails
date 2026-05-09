@@ -1,0 +1,237 @@
+
+> eslint-plugin-ai-guardrails@1.1.0 test
+> jest
+
+PASS tests/integration.test.ts
+PASS tests/max-file-lines.test.ts
+PASS tests/max-function-lines.test.ts
+PASS tests/no-orphan-todos.test.ts
+FAIL tests/no-ai-obvious-comments.test.ts
+  ● no-ai-obvious-comments › valid › 
+        // 1
+        // 2
+        // 3
+        // 4
+        // 5
+        // 6
+        // 7
+        // 8
+        // 9
+        // 10
+        const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+      
+
+    assert.strictEqual(received, expected)
+
+    Expected value to strictly be equal to:
+      0
+    Received:
+      1
+
+    Message:
+      Should have no errors but had 1: [
+      {
+        ruleId: 'no-ai-obvious-comments',
+        severity: 1,
+        message: 'Too many consecutive comment lines for inline logic (found 10, max 3). Please move extensive explanations to external documentation or link the code.',
+        line: 2,
+        column: 9,
+        nodeType: null,
+        messageId: 'verticalLimitInline',
+        endLine: 11,
+        endColumn: 14
+      }
+    ]
+
+    1 !== 0
+
+      at testValidTemplate (node_modules/eslint/lib/rule-tester/rule-tester.js:899:20)
+      at Object.<anonymous> (node_modules/eslint/lib/rule-tester/rule-tester.js:1181:33)
+
+  ● no-ai-obvious-comments › invalid › 
+        // 1
+        // 2
+        // 3
+        // 4
+        // 5
+        const x = 1;
+        const y = 2;
+        const z = 3;
+      
+
+    assert.strictEqual(received, expected)
+
+    Expected value to strictly be equal to:
+      1
+    Received:
+      2
+
+    Message:
+      Should have 1 error but had 2: [
+      {
+        ruleId: 'no-ai-obvious-comments',
+        severity: 1,
+        message: 'Too many consecutive comment lines for inline logic (found 5, max 3). Please move extensive explanations to external documentation or link the code.',
+        line: 2,
+        column: 9,
+        nodeType: null,
+        messageId: 'verticalLimitInline',
+        endLine: 6,
+        endColumn: 13
+      },
+      {
+        ruleId: 'no-ai-obvious-comments',
+        severity: 1,
+        message: 'Comment density exceeds the allowed limit (50.0%). Code should be self-documenting.',
+        line: 7,
+        column: 9,
+        nodeType: 'Program',
+        messageId: 'densityLimit',
+        endLine: 10,
+        endColumn: 7
+      }
+    ]
+
+    2 !== 1
+
+      at testInvalidTemplate (node_modules/eslint/lib/rule-tester/rule-tester.js:965:24)
+      at Object.<anonymous> (node_modules/eslint/lib/rule-tester/rule-tester.js:1194:33)
+
+  ● no-ai-obvious-comments › invalid › 
+        // comment
+// comment
+// comment
+// comment
+// comment
+// comment
+// comment
+// comment
+// comment
+// comment
+// comment
+// comment
+// comment
+// comment
+// comment
+        const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+const x = 1;
+      
+
+    assert.strictEqual(received, expected)
+
+    Expected value to strictly be equal to:
+      "densityLimit"
+    Received:
+      "verticalLimitInline"
+
+    Message:
+      messageId 'verticalLimitInline' does not match expected messageId 'densityLimit'.
+    + actual - expected
+
+    + 'verticalLimitInline'
+    - 'densityLimit'
+
+
+    Difference:
+
+    - Expected
+    + Received
+
+    - densityLimit
+    + verticalLimitInline
+
+      at testInvalidTemplate (node_modules/eslint/lib/rule-tester/rule-tester.js:1014:36)
+      at Object.<anonymous> (node_modules/eslint/lib/rule-tester/rule-tester.js:1194:33)
+
+Test Suites: 1 failed, 4 passed, 5 total
+Tests:       3 failed, 58 passed, 61 total
+Snapshots:   0 total
+Time:        5.293 s
+Ran all test suites.

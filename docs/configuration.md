@@ -22,11 +22,13 @@ The fastest way to configure everything:
 npx eslint-plugin-ai-guardrails init
 ```
 
-This creates or updates:
-- `eslint.config.mjs` — flat config with recommended rules (only when no ESLint config exists)
-- `tsconfig.json` — strict baseline (only if missing)
-- `package.json` scripts — `lint`, `typecheck`, `build` (only if missing)
-- Dev dependencies — installs what's missing
+This smart automation CLI will:
+- Detect your framework automatically (Vite, Next.js, Elysia, NestJS, etc.)
+- Completely configure your project to match the AI-Guardrails standards, replacing legacy configs where necessary
+- Add strict `lint`, `typecheck`, and `build` scripts to your `package.json`
+- Ensure all required dev dependencies are installed
+- Auto-generate strict AI guardrail instructions for `.windsurf`, `.cursor`, `.agents`, and `.kiro`
+- Provide a beautiful, interactive terminal experience to guide you through the process
 
 ---
 
@@ -107,14 +109,14 @@ module.exports = [
 ### `max-file-lines`
 
 ```json
-["warn", { "max": 300, "skipBlankLines": true, "skipComments": true }]
+["warn", { "max": 300, "skipBlankLines": true, "skipComments": false }]
 ```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `max` | `number` | `300` | Maximum effective lines per file |
 | `skipBlankLines` | `boolean` | `true` | Don't count blank lines |
-| `skipComments` | `boolean` | `true` | Don't count comment lines |
+| `skipComments` | `boolean` | `false` | Don't count comment lines |
 
 ### `max-function-lines`
 
@@ -147,7 +149,7 @@ module.exports = [
 "warn"
 ```
 
-No options. This rule uses heuristic analysis to detect comments that repeat the following line of code.
+No options. Strictly enforces density constraints (max 20%), horizontal limits (80 chars), and content quality to ensure professional comments.
 
 ---
 

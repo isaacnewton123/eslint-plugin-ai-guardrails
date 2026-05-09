@@ -16,12 +16,12 @@ This rule catches file growth early so you can split before it becomes painful.
 |--------|------|---------|-------------|
 | `max` | `number` | `300` | Maximum effective lines per file |
 | `skipBlankLines` | `boolean` | `true` | Don't count blank lines |
-| `skipComments` | `boolean` | `true` | Don't count comment-only lines |
+| `skipComments` | `boolean` | `false` | Don't count comment-only lines |
 
 ```json
 {
   "rules": {
-    "ai-guardrails/max-file-lines": ["warn", { "max": 300, "skipBlankLines": true, "skipComments": true }]
+    "ai-guardrails/max-file-lines": ["warn", { "max": 300, "skipBlankLines": true, "skipComments": false }]
   }
 }
 ```
@@ -62,7 +62,7 @@ export function formatPhone(phone: string): string { /* ... */ }
 Lower the limit for stricter teams:
 
 ```json
-["warn", { "max": 200, "skipComments": true }]
+["warn", { "max": 200, "skipComments": false }]
 ```
 
 Or raise it for legacy codebases you're gradually refactoring:

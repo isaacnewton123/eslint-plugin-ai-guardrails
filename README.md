@@ -33,7 +33,7 @@ AI coding assistants (Copilot, Cursor, ChatGPT, Claude, etc.) are incredibly pro
 | **God files** | Keeps appending to one file instead of splitting | `max-file-lines` warns when a file exceeds 300 lines |
 | **God functions** | Generates monolithic functions with everything inlined | `max-function-lines` warns when a function exceeds 50 lines |
 | **Orphan TODOs** | Leaves `TODO` / `FIXME` / `HACK` with no tracking | `no-orphan-todos` errors without a link or deadline |
-| **Redundant comments** | Adds `// Set x to 5` above `const x = 5` | `no-ai-obvious-comments` flags comments that repeat the code |
+| **Redundant comments** | Adds massive blocks of unnecessary explanations | `no-ai-obvious-comments` enforces max density (20%), length, and quality |
 
 These aren't style nitpicks — they're the exact patterns that turn a productive AI-assisted sprint into months of refactoring.
 
@@ -82,7 +82,7 @@ bun add -d eslint-plugin-ai-guardrails @typescript-eslint/parser
 
 ---
 
-## Quick Start
+## 🚀 Quick Setup
 
 ### One-command setup (recommended)
 
@@ -90,13 +90,14 @@ bun add -d eslint-plugin-ai-guardrails @typescript-eslint/parser
 npx eslint-plugin-ai-guardrails init
 ```
 
-This will:
+This smart automation CLI will:
 
-1. Create `eslint.config.mjs` if you don't already have an ESLint config
-2. Add `lint`, `typecheck`, and `build` scripts only when missing (existing scripts are preserved)
-3. Ensure required dev dependencies are installed
-4. Create `tsconfig.json` with a strict baseline (if missing)
-5. Wire `vite-plugin-checker` if Vite is detected
+1. Detect your framework (Vite, Next.js, Elysia, NestJS, etc.) automatically.
+2. Completely configure your project to match the AI-Guardrails standards, replacing legacy configs where necessary.
+3. Add strict `lint`, `typecheck`, and `build` scripts to your `package.json`.
+4. Ensure all required dev dependencies are installed.
+5. Auto-generate strict AI guardrail instructions for `.windsurf`, `.cursor`, `.agents`, and `.kiro`.
+6. Provide a beautiful, interactive terminal experience to guide you through the process.
 
 ### ESLint v9 — Flat Config (recommended)
 
@@ -129,7 +130,7 @@ export default [
 | [`max-file-lines`](docs/rules/max-file-lines.md) | `warn` | suggestion | Prevent files from exceeding 300 lines |
 | [`max-function-lines`](docs/rules/max-function-lines.md) | `warn` | suggestion | Prevent functions/methods from exceeding 50 lines |
 | [`no-orphan-todos`](docs/rules/no-orphan-todos.md) | `error` | problem | Require `TODO`/`FIXME`/`HACK` to include a tracking reference |
-| [`no-ai-obvious-comments`](docs/rules/no-ai-obvious-comments.md) | `warn` | suggestion | Detect comments that just repeat the following code |
+| [`no-ai-obvious-comments`](docs/rules/no-ai-obvious-comments.md) | `warn` | suggestion | Enforce strict comment density, length, and quality constraints |
 
 ### Custom Configuration
 

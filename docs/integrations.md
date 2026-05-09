@@ -1,10 +1,10 @@
 # Integrations
 
-> **Quick start**: For most projects, run `npx eslint-plugin-ai-guardrails init` to auto-generate missing scripts, `tsconfig.json`, and `eslint.config.mjs`.
+> **🚀 Quick Setup**: For most projects, run `npx eslint-plugin-ai-guardrails init` to automatically detect your framework and configure your project to match the AI-Guardrails standards. It's well optimized, without having to make any code changes.
 
 ---
 
-## Vite + React + TypeScript
+## ⭐ Vite + React + TypeScript
 
 Use `vite-plugin-checker` to surface ESLint violations in both the terminal and browser overlay during development.
 
@@ -57,7 +57,7 @@ export default defineConfig({
 
 ---
 
-## Next.js + TypeScript
+## ⭐ Next.js + TypeScript
 
 Next.js 13+ supports ESLint v9 flat config natively.
 
@@ -166,7 +166,7 @@ Express projects using ESLint v8 can use the legacy `.eslintrc` config.
 
 ---
 
-## Elysia / Hono / Bun + TypeScript
+## ⭐ Elysia / Hono / Bun + TypeScript
 
 Bun-based backends (Elysia, Hono) work with ESLint v9 flat config.
 

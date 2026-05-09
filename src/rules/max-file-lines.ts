@@ -13,7 +13,7 @@ type MessageIds = 'tooManyLines';
 const defaultOptions = {
   max: 300,
   skipBlankLines: true,
-  skipComments: true
+  skipComments: false
 };
 
 const rule: TSESLint.RuleModule<MessageIds, Options> = {

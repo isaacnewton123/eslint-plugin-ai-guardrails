@@ -5,97 +5,186 @@ const ruleTester = new TSESLint.RuleTester({
   parser: require.resolve('@typescript-eslint/parser')
 });
 
+const generateLines = (count: number, content: string = 'const x = 1;'): string => {
+  return Array(count).fill(content).join('\n');
+};
+
 ruleTester.run('no-ai-obvious-comments', rule, {
   valid: [
-    // Useful comment explaining WHY
     {
+      // Valid density (< 50 lines, <= 30%)
       code: `
-        // Validate user input before persisting to storage.
-        const result = saveUser(input);
+        // 1
+        // 2
+        // 3
+        function test() {}
+        ${generateLines(10)}
       `
     },
-    // Comment explaining a subtle edge case
     {
+      // Valid density (>= 50 lines, <= 20%)
       code: `
-        // This function has a subtle edge case around DST transitions.
-        runScheduler();
+        // 1
+        // 2
+        // 3
+        function test() {}
+        // 4
+        // 5
+        // 6
+        function test2() {}
+        // 7
+        // 8
+        // 9
+        function test3() {}
+        // 10
+        ${generateLines(50)}
       `
     },
-    // Comment with no code below it
     {
+      // Valid horizontal limit
       code: `
-        // This is the last line
+        // This is a short comment
+        ${generateLines(10)}
       `
     },
-    // Comment far from next statement (blank lines between)
     {
+      // Valid vertical docstring (<= 10 lines)
       code: `
-        // Some comment
-
-
-        const unrelated = true;
+        // 1
+        // 2
+        // 3
+        // 4
+        // 5
+        // 6
+        // 7
+        // 8
+        // 9
+        // 10
+        function test() {}
+        ${generateLines(50)}
       `
     },
-    // Block comment (rule only targets line comments)
     {
+      // Valid vertical inline (<= 3 lines)
       code: `
-        /* Set x to 5 */
-        const x = 5;
+        function test() {
+          // 1
+          // 2
+          // 3
+          const a = 1;
+        }
+        ${generateLines(50)}
       `
     },
-    // Comment with many unique words (size > 6, not trigger words)
     {
+      // Valid non-obvious comment
       code: `
-        // ensure data integrity check before commit transaction finalization protocol
-        const result = validate();
-      `
-    },
-    // Comment before a different kind of statement
-    {
-      code: `
-        // Log the current state for debugging purposes
-        if (debug) { console.log(state); }
+        // We need to fetch user data before parsing
+        const result = getUser();
+        ${generateLines(10)}
       `
     }
   ],
   invalid: [
-    // Classic obvious comment
     {
+      // Invalid density (< 50 lines, > 30%)
       code: `
-        // Set x to 5
-        const x = 5;
+        // 1
+        // 2
+        // 3
+        const x = 1;
+        // 4
+        // 5
+        const y = 2;
+        const z = 3;
       `,
-      errors: [{ messageId: 'obviousComment' }]
+      errors: [{ messageId: 'densityLimit' }]
     },
-    // Increment narration
     {
+      // Invalid density (>= 50 lines, > 20%)
       code: `
-        // Increase counter
+        // 1
+        // 2
+        // 3
+        const x = 1;
+        // 4
+        // 5
+        // 6
+        const y = 1;
+        // 7
+        // 8
+        // 9
+        const z = 1;
+        // 10
+        // 11
+        // 12
+        const a = 1;
+        // 13
+        // 14
+        // 15
+        const b = 1;
+        ${generateLines(40)}
+      `,
+      errors: [
+        { messageId: 'densityLimit' }
+      ]
+    },
+    {
+      // Invalid horizontal limit
+      code: `
+        // This is a very long comment that exceeds the eighty character limit horizontally causing an error to be reported.
+        ${generateLines(20)}
+      `,
+      errors: [{ messageId: 'horizontalLimit' }]
+    },
+    {
+      // Invalid vertical docstring (> 10 lines)
+      code: `
+        // 1
+        // 2
+        // 3
+        // 4
+        // 5
+        // 6
+        // 7
+        // 8
+        // 9
+        // 10
+        // 11
+        function test() {}
+        ${generateLines(60)}
+      `,
+      errors: [{ messageId: 'verticalLimitDocstring' }]
+    },
+    {
+      // Invalid vertical inline (> 3 lines)
+      code: `
+        function test() {
+          // 1
+          // 2
+          // 3
+          // 4
+          const a = 1;
+        }
+        ${generateLines(50)}
+      `,
+      errors: [{ messageId: 'verticalLimitInline' }]
+    },
+    {
+      // Commented out code
+      code: `
+        // const x = 10;
+        doSomethingCompletelyUnrelated();
+        ${generateLines(20)}
+      `,
+      errors: [{ messageId: 'commentedOutCode' }]
+    },
+    {
+      // Obvious comment (repeating code)
+      code: `
+        // Increment i
         i++;
-      `,
-      errors: [{ messageId: 'obviousComment' }]
-    },
-    // Assignment narration
-    {
-      code: `
-        // assign value
-        const value = 42;
-      `,
-      errors: [{ messageId: 'obviousComment' }]
-    },
-    // Increment with +=
-    {
-      code: `
-        // increment counter
-        counter += 1;
-      `,
-      errors: [{ messageId: 'obviousComment' }]
-    },
-    // Decrement narration
-    {
-      code: `
-        // decrease count
-        count--;
+        ${generateLines(20)}
       `,
       errors: [{ messageId: 'obviousComment' }]
     }
