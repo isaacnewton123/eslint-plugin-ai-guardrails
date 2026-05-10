@@ -7,7 +7,13 @@ and this project follows [Semantic Versioning](https://semver.org/).
 
 ## [release]
 
-## [1.2.0] - 2026-05-10
+## [1.3.1] - 2026-05-10
+
+### Fixed
+
+- **CLI Initialization**: Corrected an issue where running `init` on an Elysia project generated Next.js package scripts instead of the correct `bun run` commands.
+
+## [1.3.0] - 2026-05-10
 
 ### Added
 
@@ -16,7 +22,7 @@ and this project follows [Semantic Versioning](https://semver.org/).
   - Generates comprehensive baseline setups including `eslint.config.js/mjs`, `tsconfig.json`, and automatic `vite-plugin-checker` wiring.
   - Intelligently patches `package.json` to inject necessary `lint`, `typecheck`, and `build` scripts without overwriting user data.
   - Interactive safety prompts prevent accidental destructive overwrites.
-- **Automated AI Rules Scaffolding**: 
+- **Automated AI Rules Scaffolding (AI Cages)**: 
   - The CLI now automatically generates and formats strict AI guardrail instructions for `.windsurf/rules/ai-guardrails.md`, `.cursor/rules/ai-guardrails.md`, `.agents/rules/ai-guardrails.md`, and `.kiro/steering/ai-guardrails.md`.
   - Injects a zero-tolerance "AI Cage" prompt to ensure future AI-generated code conforms strictly to project limitations (no redundant comments, strict lines limits).
 
@@ -27,7 +33,7 @@ and this project follows [Semantic Versioning](https://semver.org/).
   - **Horizontal Limits**: Fails if any individual comment line exceeds 80 characters.
   - **Vertical Limits**: Allows 10 consecutive lines for docstrings but only 3 lines for inline logic.
   - **Content Heuristics**: Detects commented-out code snippets and flags redundant explanations that merely repeat the code's token logic.
-- **Max Line Rules**: `max-file-lines` and `max-function-lines` now count both code AND comment lines towards their limits by default (`skipComments: false`).
+- **Max Line Rules**: `max-file-lines` and `max-function-lines` have had their `skipComments` defaults restored to `true` to ensure comment blocks do not unfairly trigger line-limit violations.
 
 ## [1.1.0] - 2026-05-07
 

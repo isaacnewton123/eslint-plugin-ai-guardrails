@@ -187,12 +187,11 @@ export default [
 ]
 `,
     packageScripts: {
-      dev: "next dev",
-      build: "bun run lint && bun run typecheck && next build",
-      start: "next start",
-      lint: "eslint .",
-      "lint:watch": "bunx nodemon --exec \"eslint .\" --ext ts,tsx",
-      typecheck: "tsc --noEmit"
+      test: "echo \"Error: no test specified\" && exit 1",
+      dev: "bun run --watch src/index.ts",
+      lint: "eslint . --max-warnings 0",
+      typecheck: "tsc --noEmit",
+      build: "bun run lint && bun run typecheck"
     }
   },
   generic: {
