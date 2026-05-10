@@ -1,103 +1,48 @@
-# Contributing
+# Contributing to AI Guardrails
 
-Thanks for your interest in contributing to AI Guardrails!
+Thank you for helping improve `eslint-plugin-ai-guardrails`. This guide focuses on maximum efficiency and zero boilerplate to get you building quickly.
 
-## Prerequisites
-
-- Node.js ≥ 18
-- npm (comes with Node)
-
-## Local Setup
-
-```bash
-git clone https://github.com/isaacnewton123/eslint-plugin-ai-guardrails.git
-cd eslint-plugin-ai-guardrails
-npm install
-```
-
-## Development Workflow
-
-1. Add or update a rule in `src/rules/`.
-2. Add tests in `tests/`.
-3. Update rule docs in `docs/rules/`.
-4. Run quality checks:
-
-```bash
-npm run lint      # Zero warnings
-npm run build     # TypeScript compilation
-npm test          # All tests must pass
-```
-
-## Architecture Overview
+## Architecture & Folder Structure
 
 ```
 src/
-  index.ts              Plugin entry point (rules, configs, flatConfigs)
-  cli.ts                CLI initializer (npx eslint-plugin-ai-guardrails init)
-  configs/
-    recommended.ts      ESLint v8 legacy recommended config
-  rules/
-    max-file-lines.ts
-    max-function-lines.ts
-    no-orphan-todos.ts
-    no-ai-obvious-comments.ts
-tests/
-  *.test.ts             Unit tests (RuleTester)
-  integration.test.ts   Plugin export smoke tests
-docs/
-  rules/                Per-rule documentation
-  configuration.md      Full options reference
-  integrations.md       Framework-specific setup guides
-  troubleshooting.md    Common issues and fixes
+  index.ts              # Core plugin entry (exports rules & flatConfigs)
+  rules/                # Individual linting rules
+  cli/
+    index.ts            # CLI execution script (npx eslint-plugin-ai-guardrails init)
+    templates.ts        # Framework-specific config generation (Next.js, Vite, etc.)
+    utils.ts            # Project auto-detection logic
+    ai-rules.ts         # Scaffolding logic for .cursorrules / .windsurfrules
+tests/                  # Jest test suite
 ```
 
-### Key Design Decisions
+## Adding New Framework Support to the CLI
 
-- **Lazy parser loading**: `@typescript-eslint/parser` is loaded via `require()` inside a try/catch so the plugin never crashes at import time if the parser isn't installed yet.
-- **Self-referencing flat config**: `flatConfigs.recommended.plugins['ai-guardrails']` references the plugin object itself, which is required by ESLint v9.
-- **CJS module with ESM compatibility**: The package uses `"type": "commonjs"` with TypeScript's `export default`, enabling both `require()` and `import` to work.
+If you want the `init` command to automatically configure a new framework (e.g., SvelteKit, Express), follow these 3 steps:
 
-## Rule Authoring Checklist
+1. **Detection**: Update `src/cli/utils.ts` -> `detectProject()` to identify the framework via dependencies or unique files (e.g., `svelte.config.js`).
+2. **Templates**: Open `src/cli/templates.ts` and add a new framework object to `TPLS`. Include the appropriate `eslintConfigMjs` template and the correct `packageScripts` (for linting and building).
+3. **Execution**: In `src/cli/index.ts`, map the newly detected framework boolean to the template you created in Step 2.
 
-- [ ] Add complete `meta` object: `type`, `docs.description`, `schema`, `messages`
-- [ ] Set `defaultOptions` array
-- [ ] Use the compatibility shim for `sourceCode`: `(context as unknown as { sourceCode?: ... }).sourceCode ?? context.getSourceCode()`
-- [ ] Write tests covering: defaults, option overrides, edge cases, valid and invalid
-- [ ] Add docs in `docs/rules/<rule-name>.md` with: description, options table, examples, "When Not To Use"
-- [ ] Register the rule in `src/index.ts` (both `rules` object and `flatConfigs.recommended.rules`)
-- [ ] Update `src/configs/recommended.ts` for ESLint v8
+## Local Testing
 
-## Testing
+Before submitting a PR, ensure all quality checks pass. The build pipeline enforces strict typing and linting.
 
 ```bash
-# Run all tests
+npm install
+
+# 1. Ensure the code is warning-free
+npm run lint
+
+# 2. Compile TypeScript
+npm run build
+
+# 3. Run all tests
 npm test
-
-# Run a specific test file
-npx jest tests/max-file-lines.test.ts
-
-# Run with coverage
-npx jest --coverage
 ```
 
-## Pull Requests
+## PR Guidelines
 
-- Keep changes focused and reviewable
-- Include tests for behavior changes
-- Update docs for user-facing changes
-- Run `npm run build && npm test` before submitting
-
-## Commit Messages
-
-Use clear, imperative-mood messages:
-
-```
-fix: lazy-load parser to prevent import crashes
-feat: add skipSingleLine option to max-function-lines
-docs: add SvelteKit integration guide
-test: add edge cases for empty files
-```
-
-## Maintainer
-
-- **Hanif Maulana (Isaac Newton)** — [github.com/isaacnewton123](https://github.com/isaacnewton123)
+- Write tests for new rules or CLI logic.
+- Keep PRs focused on a single issue or feature.
+- Run the 3 local testing commands above. If they pass, you're ready to submit!

@@ -62,6 +62,17 @@ This plugin is integration-tested against these framework configurations:
 - ✅ **CJS projects** (`require()` with `eslint.config.cjs`)
 - ✅ **Monorepo workspaces** (npm / pnpm / yarn workspaces)
 
+### Support Matrix
+
+| Framework | Status | CLI `init` Support |
+|-----------|--------|-------------------|
+| **Elysia** | Native | Full |
+| **Next.js** | Native | Full |
+| **Vite** | Native | Full |
+| **NestJS** | Basic | Partial (In Progress) |
+| **Express** | Basic | Partial (In Progress) |
+| **SvelteKit** | Basic | Partial (In Progress) |
+
 ---
 
 ## Installation
@@ -201,9 +212,25 @@ npm test
 
 See:
 - [Contributing Guide](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Changelog](CHANGELOG.md)
 - [Versioning & Release](docs/versioning-and-release.md)
 - [Security Policy](SECURITY.md)
+
+---
+
+## Roadmap
+
+- **Phase 1 (Done)**: Core rules (`max-file-lines`, `max-function-lines`, `no-orphan-todos`, `no-ai-obvious-comments`), ESLint v8/v9 support, CLI `init` for Vite/Next.js/Elysia.
+- **Phase 2 (In Progress)**: CLI Optimization for NestJS, Express, and SvelteKit.
+- **Phase 3 (Future)**: AI Hallucination Guard, Automated CI Bot.
+
+---
+
+## 🤝 Contributions
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ---
 
