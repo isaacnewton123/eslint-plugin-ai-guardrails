@@ -229,8 +229,11 @@ See:
 
 ## 🤝 Contributions
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+A massive thank you to everyone who has helped build and improve AI Guardrails!
+
+<a href="https://github.com/isaacnewton123/eslint-plugin-ai-guardrails/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=isaacnewton123/eslint-plugin-ai-guardrails" />
+</a>
 
 ---
 
