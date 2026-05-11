@@ -176,6 +176,29 @@ export default defineConfig([
       typecheck: "tsc --noEmit"
     }
   },
+  nestjs: {
+    eslintConfigMjs: `import tseslint from 'typescript-eslint'
+import aiGuardrails from 'eslint-plugin-ai-guardrails'
+
+export default [
+  { ignores: ['dist', 'coverage', 'node_modules'] },
+  ...tseslint.configs.recommended,
+  aiGuardrails.flatConfigs.recommended,
+  {
+    files: ['**/*.ts'],
+    rules: {
+      'ai-guardrails/max-file-lines': ['warn', { max: 250 }],
+      'ai-guardrails/max-function-lines': ['warn', { max: 40 }],
+    },
+  },
+]
+`,
+    packageScripts: {
+      lint: "eslint \"src/**/*.ts\" --max-warnings 0",
+      typecheck: "tsc --noEmit",
+      build: "npm run lint && npm run typecheck && nest build"
+    }
+  },
   elysia: {
     eslintConfigMjs: `import tseslint from 'typescript-eslint'
 import aiGuardrails from 'eslint-plugin-ai-guardrails'

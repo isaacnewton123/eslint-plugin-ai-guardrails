@@ -15,6 +15,7 @@ import {
   removeFileIfExists,
   detectProject,
   detectPackageManager,
+  selectProjectKind,
   ensureDeps
 } from './cli/utils';
 import { generateAiRules } from './cli/ai-rules';
@@ -50,6 +51,7 @@ const runInit = async (cwd: string) => {
   }
 
   const detected = detectProject(cwd, pkg);
+  const projectKind = selectProjectKind(detected);
   const pm = detectPackageManager(cwd);
 
   const updateScripts = (scripts: Record<string, string>) => {
@@ -62,7 +64,7 @@ const runInit = async (cwd: string) => {
     ['.eslintrc', '.eslintrc.json', '.eslintrc.js', '.eslintrc.cjs', '.eslintrc.yaml', '.eslintrc.yml'].forEach(f => removeFileIfExists(path.join(cwd, f)));
   };
 
-  if (detected.isVite) {
+  if (projectKind === 'vite') {
     console.log(c.cyan('🛠️  Vite configuration detected. Applying Vite templates...'));
 
     writeText(path.join(cwd, 'vite.config.ts'), TPLS.vite.viteConfigTs);
@@ -83,7 +85,7 @@ const runInit = async (cwd: string) => {
 
     updateScripts(TPLS.vite.packageScripts);
     ensureDeps(cwd, pkg, pm, ['vite-plugin-checker', 'globals', 'eslint-plugin-react-hooks', 'eslint-plugin-react-refresh']);
-  } else if (detected.isNext) {
+  } else if (projectKind === 'nextjs') {
     console.log(c.cyan('🛠️  Next.js configuration detected. Applying Next.js templates...'));
 
     removeLegacyEslint();
@@ -92,7 +94,16 @@ const runInit = async (cwd: string) => {
 
     updateScripts(TPLS.nextjs.packageScripts);
     ensureDeps(cwd, pkg, pm, ['globals', 'eslint-plugin-react-hooks', 'eslint-plugin-react-refresh']);
-  } else if (detected.isElysia) {
+  } else if (projectKind === 'nestjs') {
+    console.log(c.cyan('🛠️  NestJS configuration detected. Applying NestJS templates...'));
+
+    removeLegacyEslint();
+    writeText(path.join(cwd, 'eslint.config.mjs'), TPLS.nestjs.eslintConfigMjs);
+    console.log(c.green('Patching eslint.config.mjs... Done!'));
+
+    updateScripts(TPLS.nestjs.packageScripts);
+    ensureDeps(cwd, pkg, pm);
+  } else if (projectKind === 'elysia') {
     console.log(c.cyan('🛠️  Elysia configuration detected. Applying Elysia templates...'));
 
     removeLegacyEslint();
@@ -102,7 +113,7 @@ const runInit = async (cwd: string) => {
     updateScripts(TPLS.elysia.packageScripts);
     ensureDeps(cwd, pkg, pm);
   } else {
-    console.log(c.cyan('🛠️  Generic/NestJS configuration detected. Applying base templates...'));
+    console.log(c.cyan('🛠️  Generic configuration detected. Applying base templates...'));
 
     // Generic fallback
     const configPath = fileExists(path.join(cwd, 'eslint.config.js')) ? 'eslint.config.js' : 'eslint.config.mjs';

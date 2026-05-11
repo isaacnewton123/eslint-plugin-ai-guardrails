@@ -18,6 +18,8 @@ export type DetectedProject = {
   isElysia: boolean;
 };
 
+export type ProjectKind = 'vite' | 'nextjs' | 'nestjs' | 'elysia' | 'generic';
+
 export const readJson = <T>(filePath: string): T | null => {
   try {
     return JSON.parse(fs.readFileSync(filePath, 'utf8')) as T;
@@ -54,9 +56,17 @@ export const detectProject = (cwd: string, pkg: PackageJson): DetectedProject =>
   return {
     isVite: Boolean(deps.vite) || fileExists(path.join(cwd, 'vite.config.ts')),
     isNext: Boolean(deps.next),
-    isNest: Boolean(deps['@nestjs/core']) || Boolean(deps['@nestjs/common']),
+    isNest: Boolean(deps['@nestjs/core']) || Boolean(deps['@nestjs/common']) || fileExists(path.join(cwd, 'nest-cli.json')),
     isElysia: Boolean(deps.elysia) || fileExists(path.join(cwd, 'bun.lock')) || fileExists(path.join(cwd, 'bun.lockb')),
   };
+};
+
+export const selectProjectKind = (detected: DetectedProject): ProjectKind => {
+  if (detected.isVite) return 'vite';
+  if (detected.isNext) return 'nextjs';
+  if (detected.isNest) return 'nestjs';
+  if (detected.isElysia) return 'elysia';
+  return 'generic';
 };
 
 export const detectPackageManager = (cwd: string): 'npm' | 'pnpm' | 'yarn' | 'bun' => {
