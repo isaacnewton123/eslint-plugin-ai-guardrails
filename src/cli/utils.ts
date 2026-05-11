@@ -2,13 +2,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { c } from './colors';
+import type { JsonValue } from './json';
 
 export type PackageJson = {
   type?: string;
   scripts?: Record<string, string>;
   devDependencies?: Record<string, string>;
   dependencies?: Record<string, string>;
-  [key: string]: unknown;
+  [key: string]: JsonValue | undefined;
 };
 
 export type DetectedProject = {
@@ -26,7 +27,7 @@ export const readJson = <T>(filePath: string): T | null => {
   }
 };
 
-export const writeJson = (filePath: string, value: unknown): void => {
+export const writeJson = (filePath: string, value: JsonValue): void => {
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
 };
 

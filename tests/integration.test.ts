@@ -2,6 +2,7 @@
  * Integration smoke tests — verify the plugin loads correctly
  * and exports match the expected public API surface.
  */
+import type { TSESLint } from '@typescript-eslint/utils';
 
 describe('plugin exports', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -60,12 +61,13 @@ describe('plugin exports', () => {
   });
 
   it('each rule has required meta fields', () => {
-    for (const [, rule] of Object.entries(plugin.rules)) {
-      const r = rule as { meta: { type: string; docs: { description: string }; schema: unknown[]; messages: Record<string, string> }; create: (...args: unknown[]) => unknown };
+    type AnyRuleModule = TSESLint.RuleModule<string, readonly object[]>;
+    const rules = plugin.rules as Record<string, AnyRuleModule>;
+    for (const r of Object.values(rules)) {
       expect(r.meta).toBeDefined();
       expect(r.meta.type).toBeDefined();
       expect(r.meta.docs).toBeDefined();
-      expect(r.meta.docs.description).toBeDefined();
+      expect(r.meta.docs?.description).toBeDefined();
       expect(r.meta.schema).toBeDefined();
       expect(r.meta.messages).toBeDefined();
       expect(typeof r.create).toBe('function');

@@ -1,4 +1,5 @@
 import { TSESLint } from '@typescript-eslint/utils';
+import { resolveSourceCode } from './utils/source-code';
 
 type Options = [
   {
@@ -68,7 +69,7 @@ const rule: TSESLint.RuleModule<MessageIds, Options> = {
   defaultOptions: [defaultOptions],
   create(context) {
     const options = { ...defaultOptions, ...(context.options[0] ?? {}) };
-    const sourceCode = (context as unknown as { sourceCode?: TSESLint.SourceCode }).sourceCode ?? context.getSourceCode();
+    const sourceCode = resolveSourceCode(context);
 
     return {
       Program() {

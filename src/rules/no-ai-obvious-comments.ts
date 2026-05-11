@@ -1,4 +1,20 @@
 import { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { resolveSourceCode } from './utils/source-code';
+
+type AstChild =
+  | TSESTree.Node
+  | TSESTree.Node[]
+  | string
+  | number
+  | boolean
+  | null
+  | undefined;
+
+const isAstNode = (value: AstChild): value is TSESTree.Node =>
+  typeof value === 'object' &&
+  value !== null &&
+  !Array.isArray(value) &&
+  'type' in value;
 
 type MessageIds =
   | 'densityLimit'
@@ -38,17 +54,16 @@ const collectIdentifiersAndStrings = (node: TSESTree.Node): Set<string> => {
       }
     }
 
-    for (const [key, value] of Object.entries(current)) {
+    const record = current as unknown as Record<string, AstChild>;
+    for (const key of Object.keys(record)) {
       if (key === 'parent') continue;
-      if (!value) continue;
+      const value = record[key];
       if (Array.isArray(value)) {
         for (const item of value) {
-          if (item && typeof item === 'object' && 'type' in item) {
-            stack.push(item as TSESTree.Node);
-          }
+          if (isAstNode(item)) stack.push(item);
         }
-      } else if (typeof value === 'object' && 'type' in value) {
-        stack.push(value as TSESTree.Node);
+      } else if (isAstNode(value)) {
+        stack.push(value);
       }
     }
   }
@@ -107,7 +122,7 @@ const rule: TSESLint.RuleModule<MessageIds, Options> = {
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = (context as unknown as { sourceCode?: TSESLint.SourceCode }).sourceCode ?? context.getSourceCode();
+    const sourceCode = resolveSourceCode(context);
     const lines = sourceCode.lines;
     const totalLines = lines.length;
 

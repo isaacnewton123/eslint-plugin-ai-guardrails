@@ -20,10 +20,10 @@ const configs = {
  * Lazily resolve @typescript-eslint/parser to avoid hard crashes when the
  * peer dependency is not yet installed (e.g. during `npx eslint-plugin-ai-guardrails init`).
  */
-const loadParser = (): unknown => {
+const loadParser = (): TSESLint.Linter.ParserModule | undefined => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    return require('@typescript-eslint/parser');
+    return require('@typescript-eslint/parser') as TSESLint.Linter.ParserModule;
   } catch {
     return undefined;
   }
@@ -57,22 +57,20 @@ type PluginWithMeta = TSESLint.Linter.Plugin & {
   flatConfigs: ReturnType<typeof buildFlatConfigs>;
 };
 
-const plugin = {
+type PluginBase = Omit<PluginWithMeta, 'flatConfigs'>;
+
+const pluginBase: PluginBase = {
   meta: {
     name: 'eslint-plugin-ai-guardrails',
-    version: '1.1.0'
+    version: '1.3.2'
   },
   rules,
   configs
-} as unknown as PluginWithMeta;
+};
 
-/**
- * Attach flatConfigs to the plugin object so that both of these work:
- *   - `import aiGuardrails from '...'`  →  aiGuardrails.flatConfigs.recommended
- *   - `require('...')`                  →  module.flatConfigs.recommended
- *   - `require('...').default`          →  default.flatConfigs.recommended
- */
-plugin.flatConfigs = buildFlatConfigs(plugin);
+const plugin: PluginWithMeta = Object.assign(pluginBase, {
+  flatConfigs: buildFlatConfigs(pluginBase)
+});
 
 export default plugin;
 export { rules, configs };

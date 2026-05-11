@@ -5,7 +5,16 @@ All notable changes to this project are documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/).
 
-## [release]
+## [1.3.2] - 2026-05-11
+
+### Internal
+
+- **Type-safety refactor**: Eliminated ambiguous `unknown` and `as unknown as` cast annotations across the plugin source. No public API or rule behavior changes.
+  - New `src/cli/json.ts` exports `JsonValue` / `JsonObject` types now used by `PackageJson` and `writeJson()` instead of `unknown`.
+  - New `src/rules/utils/source-code.ts` exports `resolveSourceCode(context)`, replacing the duplicated `(context as unknown as { sourceCode?: TSESLint.SourceCode })` shim in all four rules.
+  - `loadParser()` in `src/index.ts` now returns `TSESLint.Linter.ParserModule | undefined` instead of `unknown`; the `as unknown as PluginWithMeta` double-cast on the plugin object was removed via a `PluginBase = Omit<PluginWithMeta, 'flatConfigs'>` intermediate type.
+  - `no-ai-obvious-comments` AST walker now uses a typed `AstChild` union and an `isAstNode` type predicate, eliminating the `as TSESTree.Node` casts in the traversal.
+- **Test suite**: now 61 tests (up from 60); all green.
 
 ## [1.3.1] - 2026-05-10
 
@@ -33,7 +42,7 @@ and this project follows [Semantic Versioning](https://semver.org/).
   - **Horizontal Limits**: Fails if any individual comment line exceeds 80 characters.
   - **Vertical Limits**: Allows 10 consecutive lines for docstrings but only 3 lines for inline logic.
   - **Content Heuristics**: Detects commented-out code snippets and flags redundant explanations that merely repeat the code's token logic.
-- **Max Line Rules**: `max-file-lines` and `max-function-lines` have had their `skipComments` defaults restored to `true` to ensure comment blocks do not unfairly trigger line-limit violations.
+- **Max Function Lines Rule**: The `max-function-lines` rule now sets `skipComments` to `true` by default, ensuring comment blocks do not unfairly trigger line-limit violations.
 
 ## [1.1.0] - 2026-05-07
 
