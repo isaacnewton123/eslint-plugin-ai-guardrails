@@ -56,6 +56,7 @@ This plugin is integration-tested against these framework configurations:
 
 - ✅ **Vite + React + TypeScript** (ESLint v9 flat config)
 - ✅ **Next.js** (ESLint v9 flat config with `@eslint/js` + `typescript-eslint`)
+- ✅ **SvelteKit** (ESLint v9 flat config with `eslint-plugin-svelte` + `svelte-check`)
 - ✅ **NestJS** (ESLint v9 flat config with strict overrides)
 - ✅ **Express + TypeScript** (ESLint v8 legacy `.eslintrc`)
 - ✅ **ESM projects** (`"type": "module"` with `eslint.config.mjs`)
@@ -71,7 +72,7 @@ This plugin is integration-tested against these framework configurations:
 | **Vite** | Native | Full |
 | **NestJS** | Basic | Partial (In Progress) |
 | **Express** | Basic | Partial (In Progress) |
-| **SvelteKit** | Basic | Partial (In Progress) |
+| **SvelteKit** | Native | Full |
 
 ---
 
@@ -222,7 +223,7 @@ See:
 ## Roadmap
 
 - **Phase 1 (Done)**: Core rules (`max-file-lines`, `max-function-lines`, `no-orphan-todos`, `no-ai-obvious-comments`), ESLint v8/v9 support, CLI `init` for Vite/Next.js/Elysia.
-- **Phase 2 (In Progress)**: CLI Optimization for NestJS, Express, and SvelteKit.
+- **Phase 2 (In Progress)**: CLI Optimization for NestJS and Express; SvelteKit native init support is available.
 - **Phase 3 (Future)**: AI Hallucination Guard, Automated CI Bot.
 
 ---

@@ -13,6 +13,7 @@ export type PackageJson = {
 };
 
 export type DetectedProject = {
+  isSvelteKit: boolean;
   isVite: boolean;
   isNext: boolean;
   isNest: boolean;
@@ -52,7 +53,11 @@ export const removeFileIfExists = (filePath: string): void => {
 
 export const detectProject = (cwd: string, pkg: PackageJson): DetectedProject => {
   const deps = { ...(pkg.dependencies ?? {}), ...(pkg.devDependencies ?? {}) };
+  const hasSvelteConfig = fileExists(path.join(cwd, 'svelte.config.js')) || fileExists(path.join(cwd, 'svelte.config.ts'));
+  const hasSvelteKitRoutes = fileExists(path.join(cwd, 'src', 'routes'));
+
   return {
+    isSvelteKit: Boolean(deps['@sveltejs/kit']) || (hasSvelteConfig && hasSvelteKitRoutes),
     isVite: Boolean(deps.vite) || fileExists(path.join(cwd, 'vite.config.ts')),
     isNext: Boolean(deps.next),
     isNest: Boolean(deps['@nestjs/core']) || Boolean(deps['@nestjs/common']),

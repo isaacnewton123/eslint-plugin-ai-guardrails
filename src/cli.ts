@@ -62,7 +62,16 @@ const runInit = async (cwd: string) => {
     ['.eslintrc', '.eslintrc.json', '.eslintrc.js', '.eslintrc.cjs', '.eslintrc.yaml', '.eslintrc.yml'].forEach(f => removeFileIfExists(path.join(cwd, f)));
   };
 
-  if (detected.isVite) {
+  if (detected.isSvelteKit) {
+    console.log(c.cyan('🛠️  SvelteKit configuration detected. Applying SvelteKit templates...'));
+
+    removeLegacyEslint();
+    writeText(path.join(cwd, 'eslint.config.mjs'), TPLS.sveltekit.eslintConfigMjs);
+    console.log(c.green('Patching eslint.config.mjs... Done!'));
+
+    updateScripts(TPLS.sveltekit.packageScripts);
+    ensureDeps(cwd, pkg, pm, ['@eslint/js', 'eslint-plugin-svelte', 'svelte-eslint-parser', 'svelte-check', 'globals']);
+  } else if (detected.isVite) {
     console.log(c.cyan('🛠️  Vite configuration detected. Applying Vite templates...'));
 
     writeText(path.join(cwd, 'vite.config.ts'), TPLS.vite.viteConfigTs);

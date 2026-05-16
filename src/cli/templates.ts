@@ -176,6 +176,68 @@ export default defineConfig([
       typecheck: "tsc --noEmit"
     }
   },
+  sveltekit: {
+    eslintConfigMjs: `import js from '@eslint/js'
+import globals from 'globals'
+import svelte from 'eslint-plugin-svelte'
+import tseslint from 'typescript-eslint'
+import aiGuardrails from 'eslint-plugin-ai-guardrails'
+
+const aiGuardrailRules = {
+  'ai-guardrails/max-file-lines': 'warn',
+  'ai-guardrails/max-function-lines': 'warn',
+  'ai-guardrails/no-orphan-todos': 'error',
+  'ai-guardrails/no-ai-obvious-comments': 'warn',
+}
+
+export default [
+  {
+    ignores: ['.svelte-kit', 'build', 'coverage', 'node_modules'],
+  },
+
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  ...svelte.configs['flat/recommended'],
+
+  aiGuardrails.flatConfigs.recommended,
+
+  {
+    files: ['**/*.svelte'],
+    plugins: {
+      'ai-guardrails': aiGuardrails,
+    },
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+      parserOptions: {
+        parser: tseslint.parser,
+      },
+    },
+    rules: aiGuardrailRules,
+  },
+
+  {
+    files: ['**/*.{js,ts,svelte}'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+  },
+]
+`,
+    packageScripts: {
+      dev: "vite dev",
+      build: "npm run lint && npm run typecheck && vite build",
+      preview: "vite preview",
+      check: "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+      "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+      lint: "eslint .",
+      typecheck: "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+    }
+  },
   elysia: {
     eslintConfigMjs: `import tseslint from 'typescript-eslint'
 import aiGuardrails from 'eslint-plugin-ai-guardrails'

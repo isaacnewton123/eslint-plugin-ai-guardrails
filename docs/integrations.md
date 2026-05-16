@@ -206,14 +206,35 @@ SvelteKit projects using ESLint v9 flat config:
 
 ```js
 import js from '@eslint/js';
+import svelte from 'eslint-plugin-svelte';
 import tseslint from 'typescript-eslint';
 import aiGuardrails from 'eslint-plugin-ai-guardrails';
+
+const aiGuardrailRules = {
+  'ai-guardrails/max-file-lines': 'warn',
+  'ai-guardrails/max-function-lines': 'warn',
+  'ai-guardrails/no-orphan-todos': 'error',
+  'ai-guardrails/no-ai-obvious-comments': 'warn'
+};
 
 export default [
   { ignores: ['.svelte-kit', 'build', 'node_modules'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
-  aiGuardrails.flatConfigs.recommended
+  ...svelte.configs['flat/recommended'],
+  aiGuardrails.flatConfigs.recommended,
+  {
+    files: ['**/*.svelte'],
+    plugins: {
+      'ai-guardrails': aiGuardrails
+    },
+    languageOptions: {
+      parserOptions: {
+        parser: tseslint.parser
+      }
+    },
+    rules: aiGuardrailRules
+  }
 ];
 ```
 
@@ -223,13 +244,13 @@ export default [
 {
   "scripts": {
     "lint": "eslint . --max-warnings 0",
-    "typecheck": "svelte-check --tsconfig ./tsconfig.json",
+    "typecheck": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "build": "npm run lint && npm run typecheck && vite build"
   }
 }
 ```
 
-> **Note**: `ai-guardrails` rules only apply to `.ts` and `.tsx` files. Svelte component files (`.svelte`) are not linted by this plugin.
+The CLI init template also installs `eslint-plugin-svelte`, `svelte-eslint-parser`, and `svelte-check` when they are missing, so `.svelte` component scripts are parsed before AI Guardrails rules run.
 
 ---
 
